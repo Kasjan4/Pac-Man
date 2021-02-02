@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+
+* {
+  color: rgb(214, 214, 214);
+  font-family: 'Fredoka One', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+html {
+  background-color: black;
+
+
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  height: 100vh;
+}
+
+.logo {
+  opacity: 0.8;
+  position: absolute;
+  right: 2%;
+  bottom: 2rem;
+  width: 20rem;
+}
+
+.welcome {
+  font-size: 4rem;
+  position: absolute;
+  left: 7%;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.aqua {
+  color: rgb(0, 255, 255, 0.7);
+}
+
+
+.game-scores {
+  position: absolute;
+  top: 25%;
+  left: 12%;
+}
+
+.game-score {
+  color: rgb(0, 255, 255, 0.7);
+  font-size: 5rem;
+}
+
+.game-status {
+  font-size: 3rem;
+  position: absolute;
+  top: 25%;
+  left: 5%;
+}
+
+
+
+
+.nav {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 18rem;
+}
+
+.current {
+  line-height: .3;
+  margin: 0;
+  padding: 0;
+  margin-bottom: .5rem;
+}
+
+.player,
+.score {
+  font-size: 1.5rem;
+}
+
+.score {
+  padding-left: 2.5rem;
+
+}
+
+.highscore {
+  text-align: center;
+  line-height: .1;
+  margin: 0;
+  padding: 0;
+  margin-bottom: .5rem;
+}
+
+
+.high-top {
+  font-size: 1.5rem;
+}
+
+.high {
+  font-size: 1.5rem;
+}
+
+
+.screen {
+  width: 28rem;
+}
+
+.game {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  width: 28rem;
+  height: 31rem;
+  background-image: url(./img/bg.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.cell {
+  color: white;
+  font-size: 10px;
+  width: 1rem;
+  height: 1rem;
+}
+
+.pac-full {
+  background-image: url(./img/pac-full.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.pac-left {
+  background-image: url(./img/pac-left.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.pac-right {
+  background-image: url(./img/pac-right.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.pac-up {
+  background-image: url(./img/pac-up.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.pac-down {
+  background-image: url(./img/pac-down.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+
+
+.red {
+  background-image: url(./img/red.png) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  z-index: 999 !important;
+}
+
+.pink {
+  background-image: url(./img/pink.png) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+.cyan {
+  background-image: url(./img/cyan.png) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+.orange {
+  background-image: url(./img/orange.png) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+
+.ghost-scared {
+  background-image: url(./img/ghost-scared.png) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}
+
+
+
+
+
+
+.food {
+  background-image: url(./img/food.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.pellet {
+  background-image: url(./img/pellet.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
