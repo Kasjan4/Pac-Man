@@ -193,6 +193,7 @@ function startGame() {
 
     } else if (direction === 'right' && pacMan === 419) {
 
+      cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan = 392
       newFrame()
 
@@ -279,6 +280,8 @@ function startGame() {
       newFrame()
 
     } else if (direction === 'left' && pacMan === 392) {
+
+      cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan = 419
       newFrame()
     }
@@ -286,7 +289,7 @@ function startGame() {
     if (gameEnd) {
       clearInterval(gameInterval)
     }
-    console.log(pacMan)
+    
     checkForWin()
   }, speed)
 
@@ -299,6 +302,7 @@ function checkForGameOver(ghost) {
     powerPellet.pause()
     gameOverSound.play()
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
+    gameScore = ''
     gameStatus.innerHTML = 'Game Over!'
     gameMode = false
     gameEnd = true
@@ -356,6 +360,7 @@ function checkForWin() {
     powerPellet.pause()
     victory.play()
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
+    gameScore = ''
     gameStatus.innerHTML = 'Winner!'
     gameMode = false
     gameEnd = true
