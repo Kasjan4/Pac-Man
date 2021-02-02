@@ -14,11 +14,12 @@ const intro = document.querySelector('.amb')
 const audioPlayer = document.querySelector('.audio')
 const powerPellet = document.querySelector('.power-pellet')
 const gameOverSound = document.querySelector('.game-over')
+const victory = document.querySelector('.victory')
 
-audioPlayer.volume = 0.15
+audioPlayer.volume = 0.5
 
 // ! Speed of the game (interval)
-let speed = 130
+let speed = 100
 
 // ! The Pac-Man
 let pacMan = 657
@@ -37,10 +38,10 @@ class Ghost {
 }
 
 let ghosts = [
-  new Ghost('red', 321, 130),
-  new Ghost('pink', 405, 130),
-  new Ghost('cyan', 404, 130),
-  new Ghost('orange', 406, 130)
+  new Ghost('red', 321, 90),
+  new Ghost('pink', 405, 100),
+  new Ghost('cyan', 404, 100),
+  new Ghost('orange', 406, 110)
 
 ]
 
@@ -53,9 +54,9 @@ const cells = []
 let gameScore = document.querySelector('.game-score')
 let scoreHtml = document.querySelector('.score')
 let highScore = document.querySelector('.high')
+let scoreToWin = 0
 let score = 0
 highScore.innerHTML = localStorage.getItem('pacmanhighscore')
-
 
 // ! Creating the game field, generating cells
 for (let i = 0; i < cellsNo; i++) {
@@ -127,6 +128,7 @@ function newFrame() {
 
 }
 
+
 // ! Pac-Man active direction
 let direction = 'left'
 
@@ -140,6 +142,7 @@ function toggleStartEvent(event) {
 
     direction = 'left'
     score = 0
+    scoreToWin = 0
     scoreHtml.innerHTML = score
     welcome.style.visibility = 'hidden'
     intro.play()
@@ -173,6 +176,7 @@ function startGame() {
         audioPlayer.play()
         cells[pacMan + 1].classList.remove('food')
         score += 10
+        scoreToWin += 1
         scoreHtml.innerHTML = score
       } else if (cells[pacMan + 1].classList.contains('pellet')) {
         ghosts.forEach(ghost => ghost.isScared = true)
@@ -180,6 +184,7 @@ function startGame() {
         powerPellet.play()
         cells[pacMan + 1].classList.remove('pellet')
         score += 50
+        scoreToWin += 1
         gameScore.innerHTML = '50!'
         setTimeout(() => {
           gameScore.innerHTML = ''
@@ -203,6 +208,7 @@ function startGame() {
         audioPlayer.play()
         cells[pacMan - width].classList.remove('food')
         score += 10
+        scoreToWin += 1
         scoreHtml.innerHTML = score
       } else if (cells[pacMan - width].classList.contains('pellet')) {
         ghosts.forEach(ghost => ghost.isScared = true)
@@ -210,6 +216,7 @@ function startGame() {
         powerPellet.play()
         cells[pacMan - width].classList.remove('pellet')
         score += 50
+        scoreToWin += 1
         gameScore.innerHTML = '50!'
         setTimeout(() => {
           gameScore.innerHTML = ''
@@ -228,6 +235,7 @@ function startGame() {
         audioPlayer.play()
         cells[pacMan + width].classList.remove('food')
         score += 10
+        scoreToWin += 1
         scoreHtml.innerHTML = score
       } else if (cells[pacMan + width].classList.contains('pellet')) {
         ghosts.forEach(ghost => ghost.isScared = true)
@@ -235,6 +243,7 @@ function startGame() {
         powerPellet.play()
         cells[pacMan + width].classList.remove('pellet')
         score += 50
+        scoreToWin += 1
         gameScore.innerHTML = '50!'
         setTimeout(() => {
           gameScore.innerHTML = ''
@@ -253,6 +262,7 @@ function startGame() {
         audioPlayer.play()
         cells[pacMan - 1].classList.remove('food')
         score += 10
+        scoreToWin += 1
         scoreHtml.innerHTML = score
       } else if (cells[pacMan - 1].classList.contains('pellet')) {
 
@@ -261,6 +271,7 @@ function startGame() {
         powerPellet.play()
         cells[pacMan - 1].classList.remove('pellet')
         score += 50
+        scoreToWin += 1
         gameScore.innerHTML = '50!'
         setTimeout(() => {
           gameScore.innerHTML = ''
@@ -292,6 +303,7 @@ function startGame() {
 
 function checkForGameOver(ghost) {
   if (pacMan === ghost.currentIndex && !ghost.isScared) {
+    powerPellet.pause()
     gameOverSound.play()
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
     gameStatus.innerHTML = 'Game Over!'
@@ -309,6 +321,7 @@ function checkForGameOver(ghost) {
       }
       pacMan = 657
       score = 0
+      scoreToWin = 0
       ghosts = [
         new Ghost('red', 321, 130),
         new Ghost('pink', 405, 130),
@@ -345,11 +358,57 @@ function checkForGameOver(ghost) {
 // ! Check for win!
 
 function checkForWin() {
-  if (score === 2810) {
+
+  if (scoreToWin === 244) {
+    powerPellet.pause()
+    victory.play()
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
     gameStatus.innerHTML = 'Winner!'
+    gameMode = false
     gameEnd = true
+
+    if (score > localStorage.getItem('pacmanhighscore')) {
+      localStorage.setItem('pacmanhighscore', score)
+      highScore.innerHTML = score
+    }
+
+    setTimeout(() => {
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].classList.remove('ghost', 'pac-up', 'pac-left', 'pac-right', 'pac-down', 'ghost-scared', 'food', 'pellet', 'pink', 'red', 'cyan', 'orange')
+      }
+      pacMan = 657
+      score = 0
+      scoreToWin = 0
+      ghosts = [
+        new Ghost('red', 321, 130),
+        new Ghost('pink', 405, 130),
+        new Ghost('cyan', 404, 130),
+        new Ghost('orange', 406, 130)
+      ]
+      ghosts.forEach(ghost => {
+        cells[ghost.currentIndex].classList.add(ghost.className)
+        cells[ghost.currentIndex].classList.add('ghost')
+      })
+
+      cells[pacMan].classList.add('pac-full')
+
+      ghostCounter = 0
+
+      for (let i = 0; i < food.length; i++) {
+        cells[food[i]].classList.add('food')
+      }
+
+      for (let i = 0; i < pellets.length; i++) {
+        cells[pellets[i]].classList.add('pellet')
+      }
+
+      gameStatus.innerHTML = ''
+      welcome.style.visibility = 'visible'
+      window.addEventListener('keypress', toggleStartEvent)
+
+    }, 6000)
   }
+
 
 }
 
