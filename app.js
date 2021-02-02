@@ -1,5 +1,3 @@
-
-
 // ! Game variables
 const game = document.querySelector('.game')
 const welcome = document.querySelector('.welcome')
@@ -29,7 +27,6 @@ function toggleMunch() {
 audioPlayer.volume = 0.5
 powerPellet.volume = 0.8
 
-
 // ! Speed of the game (interval)
 let speed = 130
 
@@ -56,7 +53,6 @@ let ghosts = [
   new Ghost('orange', 406, 130)
 
 ]
-
 
 let ghostCounter = 0
 
@@ -86,12 +82,10 @@ cells[pacMan].classList.add('pac-full')
 
 // ! Assign the ghosts to the field
 
-
 ghosts.forEach(ghost => {
   cells[ghost.currentIndex].classList.add(ghost.className)
   cells[ghost.currentIndex].classList.add('ghost')
 })
-
 
 //!Map variables, walls, food, 
 
@@ -114,17 +108,8 @@ for (let i = 0; i < pellets.length; i++) {
 cells[349].classList.add('invis')
 cells[350].classList.add('invis')
 
-
 // ! Creating a new frame each time Pac-Man moves
 function newFrame() {
-
-  for (var i = 0; i < cells.length; i++) {
-    cells[i].classList.remove('pac-left')
-    cells[i].classList.remove('pac-right')
-    cells[i].classList.remove('pac-up')
-    cells[i].classList.remove('pac-down')
-  }
-
   if (direction === 'left') {
     cells[pacMan].classList.add('pac-left')
 
@@ -136,11 +121,8 @@ function newFrame() {
 
   } else if (direction === 'down') {
     cells[pacMan].classList.add('pac-down')
-
   }
-
 }
-
 
 // ! Pac-Man active direction
 let direction = 'left'
@@ -205,7 +187,7 @@ function startGame() {
         }, 2000)
         scoreHtml.innerHTML = score
       }
-
+      cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan += 1
       newFrame()
 
@@ -213,7 +195,6 @@ function startGame() {
 
       pacMan = 392
       newFrame()
-
 
     } else if (direction === 'up' && !(cells[pacMan - width].classList.contains('wall')) && !cells[pacMan - width].classList.contains('invis')) {
 
@@ -238,9 +219,9 @@ function startGame() {
         scoreHtml.innerHTML = score
       }
 
+      cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan = pacMan - width
       newFrame()
-
 
     } else if (direction === 'down' && !(cells[pacMan + width].classList.contains('wall')) && !cells[pacMan + width].classList.contains('invis')) {
 
@@ -265,9 +246,9 @@ function startGame() {
         scoreHtml.innerHTML = score
       }
 
+      cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan = pacMan + width
       newFrame()
-
 
     } else if (direction === 'left' && !(cells[pacMan - 1].classList.contains('wall')) && !cells[pacMan - 1].classList.contains('invis')) {
 
@@ -293,9 +274,9 @@ function startGame() {
         scoreHtml.innerHTML = score
       }
 
+      cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan -= 1
       newFrame()
-
 
     } else if (direction === 'left' && pacMan === 392) {
       pacMan = 419
@@ -310,8 +291,6 @@ function startGame() {
   }, speed)
 
 }
-
-
 
 // ! Check for contact with the ghosts when ghost is not scared
 
@@ -422,10 +401,7 @@ function checkForWin() {
 
     }, 6000)
   }
-
-
 }
-
 
 // ! Unscare the ghosts
 
@@ -433,7 +409,6 @@ function unScareGhosts() {
   ghosts.forEach(ghost => ghost.isScared = false)
   ghostCounter = 0
 }
-
 
 // ! Listeners on the arrows, changes the direction of Pac-Man
 
@@ -460,12 +435,11 @@ window.addEventListener('keydown', (event) => {
 
 function moveGhost(ghost) {
 
-
   const directions = [-1, 1, width, -width]
   let direction = directions[Math.floor(Math.random() * directions.length)]
 
   ghost.timerId = setInterval(function () {
-    
+
     if (!cells[ghost.currentIndex + direction].classList.contains('wall') && !cells[ghost.currentIndex + direction].classList.contains('ghost')) {
       // ghost can go here
       // remove all ghost related classes
@@ -484,7 +458,6 @@ function moveGhost(ghost) {
       // another direction needed
       direction = directions[Math.floor(Math.random() * directions.length)]
     }
-
 
     if (pacMan === ghost.currentIndex && ghost.isScared) {
       cells[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'ghost-scared')
@@ -523,7 +496,6 @@ function moveGhost(ghost) {
       ghostCounter += 1
       cells[ghost.currentIndex].classList.add(ghost.className, 'ghost', 'ghost-scared')
     }
-
 
     checkForGameOver(ghost)
 
