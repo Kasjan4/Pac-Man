@@ -1,3 +1,9 @@
+// LOADER ON START
+
+$(window).on('load', function () {
+  $('.loader-wrapper').slideUp()
+})
+
 // ! Game variables
 const game = document.querySelector('.game')
 const ready = document.querySelector('.ready')
