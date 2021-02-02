@@ -15,11 +15,23 @@ const audioPlayer = document.querySelector('.audio')
 const powerPellet = document.querySelector('.power-pellet')
 const gameOverSound = document.querySelector('.game-over')
 const victory = document.querySelector('.victory')
+let munch = './aud/munch1.wav'
+audioPlayer.src = './aud/munch1.wav'
+
+function toggleMunch() {
+  if (munch === './aud/munch1.wav') {
+    audioPlayer.src = './aud/munch2.wav'
+  } else if (munch === './aud/munch2.wav') {
+    audioPlayer.src = './aud/munch1.wav'
+  }
+}
 
 audioPlayer.volume = 0.5
+powerPellet.volume = 0.8
+
 
 // ! Speed of the game (interval)
-let speed = 100
+let speed = 130
 
 // ! The Pac-Man
 let pacMan = 657
@@ -38,12 +50,13 @@ class Ghost {
 }
 
 let ghosts = [
-  new Ghost('red', 321, 90),
-  new Ghost('pink', 405, 100),
-  new Ghost('cyan', 404, 100),
-  new Ghost('orange', 406, 110)
+  new Ghost('red', 321, 130),
+  new Ghost('pink', 405, 130),
+  new Ghost('cyan', 404, 130),
+  new Ghost('orange', 406, 130)
 
 ]
+
 
 let ghostCounter = 0
 
@@ -149,9 +162,9 @@ function toggleStartEvent(event) {
     setTimeout(() => {
       cells[pacMan].classList.remove('pac-full')
       cells[pacMan].classList.add('pac-left')
+      startGame()
       ghosts.forEach(ghost => moveGhost(ghost))
       gameEnd = false
-      startGame()
       gameMode = true
     }, 4000)
 
@@ -173,6 +186,7 @@ function startGame() {
 
       if (cells[pacMan + 1].classList.contains('food')) {
 
+        toggleMunch()
         audioPlayer.play()
         cells[pacMan + 1].classList.remove('food')
         score += 10
@@ -204,7 +218,7 @@ function startGame() {
     } else if (direction === 'up' && !(cells[pacMan - width].classList.contains('wall')) && !cells[pacMan - width].classList.contains('invis')) {
 
       if (cells[pacMan - width].classList.contains('food')) {
-
+        toggleMunch()
         audioPlayer.play()
         cells[pacMan - width].classList.remove('food')
         score += 10
@@ -231,7 +245,7 @@ function startGame() {
     } else if (direction === 'down' && !(cells[pacMan + width].classList.contains('wall')) && !cells[pacMan + width].classList.contains('invis')) {
 
       if (cells[pacMan + width].classList.contains('food')) {
-
+        toggleMunch()
         audioPlayer.play()
         cells[pacMan + width].classList.remove('food')
         score += 10
@@ -258,7 +272,7 @@ function startGame() {
     } else if (direction === 'left' && !(cells[pacMan - 1].classList.contains('wall')) && !cells[pacMan - 1].classList.contains('invis')) {
 
       if (cells[pacMan - 1].classList.contains('food')) {
-
+        toggleMunch()
         audioPlayer.play()
         cells[pacMan - 1].classList.remove('food')
         score += 10
@@ -291,7 +305,7 @@ function startGame() {
     if (gameEnd) {
       clearInterval(gameInterval)
     }
-
+    console.log(pacMan)
     checkForWin()
   }, speed)
 
@@ -446,11 +460,12 @@ window.addEventListener('keydown', (event) => {
 
 function moveGhost(ghost) {
 
+
   const directions = [-1, 1, width, -width]
   let direction = directions[Math.floor(Math.random() * directions.length)]
 
   ghost.timerId = setInterval(function () {
-
+    
     if (!cells[ghost.currentIndex + direction].classList.contains('wall') && !cells[ghost.currentIndex + direction].classList.contains('ghost')) {
       // ghost can go here
       // remove all ghost related classes
