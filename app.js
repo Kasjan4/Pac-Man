@@ -429,6 +429,7 @@ function ghostPoints() {
 
   if (ghostCounter === 1) {
     score += 200
+    gameScore.innerHTML = ''
     gameScore.innerHTML = '200!'
     setTimeout(() => {
       gameScore.innerHTML = ''
@@ -436,6 +437,7 @@ function ghostPoints() {
     scoreHtml.innerHTML = score
   } else if (ghostCounter === 2) {
     score += 400
+    gameScore.innerHTML = ''
     gameScore.innerHTML = '400!'
     setTimeout(() => {
       gameScore.innerHTML = ''
@@ -443,6 +445,7 @@ function ghostPoints() {
     scoreHtml.innerHTML = score
   } else if (ghostCounter === 3) {
     score += 800
+    gameScore.innerHTML = ''
     gameScore.innerHTML = '800!'
     setTimeout(() => {
       gameScore.innerHTML = ''
@@ -450,6 +453,7 @@ function ghostPoints() {
     scoreHtml.innerHTML = score
   } else if (ghostCounter === 4) {
     score += 1600
+    gameScore.innerHTML = ''
     gameScore.innerHTML = '1600!'
     setTimeout(() => {
       gameScore.innerHTML = ''
