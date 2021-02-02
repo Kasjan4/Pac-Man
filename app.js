@@ -50,8 +50,8 @@ class Ghost {
 }
 
 let ghosts = [
-  new Ghost('red', 321, 130, 1, false),
-  new Ghost('pink', 405, 130, 2, false),
+  new Ghost('red', 321, 100, 1, false),
+  new Ghost('pink', 405, 100, 2, false),
   new Ghost('cyan', 404, 130, 3, false),
   new Ghost('orange', 406, 130, 4, false)
 
@@ -327,8 +327,8 @@ function checkForGameOver(ghost) {
       ready.style.visibility = 'visible'
 
       ghosts = [
-        new Ghost('red', 321, 130, 1, false),
-        new Ghost('pink', 405, 130, 2, false),
+        new Ghost('red', 321, 100, 1, false),
+        new Ghost('pink', 405, 100, 2, false),
         new Ghost('cyan', 404, 130, 3, false),
         new Ghost('orange', 406, 130, 4, false)
       ]
@@ -386,8 +386,8 @@ function checkForWin() {
       ready.style.visibility = 'visible'
       scoreToWin = 0
       ghosts = [
-        new Ghost('red', 321, 130, 1, false),
-        new Ghost('pink', 405, 130, 2, false),
+        new Ghost('red', 321, 100, 1, false),
+        new Ghost('pink', 405, 100, 2, false),
         new Ghost('cyan', 404, 130, 3, false),
         new Ghost('orange', 406, 130, 4, false)
       ]
@@ -428,29 +428,29 @@ function unScareGhosts() {
 function ghostPoints() {
 
   if (ghostCounter === 1) {
-    score += 100
-    gameScore.innerHTML = '100!'
-    setTimeout(() => {
-      gameScore.innerHTML = ''
-    }, 2000)
-    scoreHtml.innerHTML = score
-  } else if (ghostCounter === 2) {
     score += 200
     gameScore.innerHTML = '200!'
     setTimeout(() => {
       gameScore.innerHTML = ''
     }, 2000)
     scoreHtml.innerHTML = score
+  } else if (ghostCounter === 2) {
+    score += 400
+    gameScore.innerHTML = '400!'
+    setTimeout(() => {
+      gameScore.innerHTML = ''
+    }, 2000)
+    scoreHtml.innerHTML = score
   } else if (ghostCounter === 3) {
-    score += 300
-    gameScore.innerHTML = '300!'
+    score += 800
+    gameScore.innerHTML = '800!'
     setTimeout(() => {
       gameScore.innerHTML = ''
     }, 2000)
     scoreHtml.innerHTML = score
   } else if (ghostCounter === 4) {
-    score += 400
-    gameScore.innerHTML = '400!'
+    score += 1600
+    gameScore.innerHTML = '1600!'
     setTimeout(() => {
       gameScore.innerHTML = ''
     }, 2000)
