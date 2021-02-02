@@ -1,9 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap'); */
+@font-face {
+  font-family: invasion;
+  src: url('./font/INVASION2000.TTF');
+}
 
 * {
-  color: rgb(214, 214, 214);
-  font-family: 'Fredoka One', cursive;
+  color: rgb(255, 255, 255, 0.9);
+  font-family: 'invasion', cursive;
 }
 
 * {
@@ -12,26 +15,29 @@
 
 
 
-html {
-  background-color: black;
-
-
-}
-
 body {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: black;
+  background-image: url(./img/bg.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100vh;
+  transition: 3s ease;
+}
+
+.bg-play {
+  background-image: url(./img/bg-play.jpg);
+  transition: 3s ease;
 }
 
 .logo {
-  opacity: 0.8;
+ opacity: 0.9;
   position: absolute;
   right: 2%;
-  bottom: 2rem;
+  bottom: 1.5rem;
   width: 20rem;
 }
 
@@ -44,7 +50,7 @@ body {
 }
 
 .aqua {
-  color: rgb(0, 255, 255, 0.7);
+  color: rgb(0, 255, 255, 0.9);
 }
 
 
@@ -55,7 +61,7 @@ body {
 }
 
 .game-score {
-  color: rgb(0, 255, 255, 0.7);
+  color: rgb(0, 255, 255, 0.9);
   font-size: 5rem;
 }
 
@@ -67,17 +73,15 @@ body {
 }
 
 
-
-
 .nav {
   position: absolute;
   top: 10%;
-  right: 5%;
+  right: 3%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 18rem;
+  width: 20rem;
 }
 
 .current {
@@ -89,7 +93,7 @@ body {
 
 .player,
 .score {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .score {
@@ -111,27 +115,36 @@ body {
 }
 
 .high {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
+.ready {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  top: 18rem;
+  width: 6rem;
+}
 
 .screen {
+  /* background-color: rgb(0, 0, 0, 0.8); */
   width: 28rem;
 }
 
 .game {
   display: flex;
   flex-wrap: wrap;
-  background-color: white;
   width: 28rem;
   height: 31rem;
   background-image: url(./img/bg.png);
+  background-color: rgb(0, 0, 0, 0.5);
   background-repeat: no-repeat;
   background-size: contain;
 }
 
 .cell {
-  color: white;
+  
   font-size: 10px;
   width: 1rem;
   height: 1rem;
@@ -168,7 +181,6 @@ body {
 }
 
 
-
 .red {
   background-image: url(./img/red.png) !important;
   background-repeat: no-repeat !important;
@@ -202,10 +214,6 @@ body {
 }
 
 
-
-
-
-
 .food {
   background-image: url(./img/food.png);
   background-repeat: no-repeat;
@@ -217,3 +225,6 @@ body {
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+
+

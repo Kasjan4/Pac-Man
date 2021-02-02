@@ -1,7 +1,9 @@
 // ! Game variables
 const game = document.querySelector('.game')
+const ready = document.querySelector('.ready')
 const welcome = document.querySelector('.welcome')
 const gameStatus = document.querySelector('.game-status')
+const background = document.querySelector('body')
 let gameMode = false
 const cellsNo = 868
 const width = 28
@@ -37,20 +39,21 @@ let pacMan = 657
 
 class Ghost {
 
-  constructor(className, startIndex, speed) {
+  constructor(className, startIndex, speed, timerId, isScared) {
     this.className = className
     this.startIndex = startIndex
     this.speed = speed
     this.currentIndex = startIndex
-    this.timerId = NaN
+    this.timerId = timerId
+    this.isScared = isScared
   }
 }
 
 let ghosts = [
-  new Ghost('red', 321, 130),
-  new Ghost('pink', 405, 130),
-  new Ghost('cyan', 404, 130),
-  new Ghost('orange', 406, 130)
+  new Ghost('red', 321, 130, 1, false),
+  new Ghost('pink', 405, 130, 2, false),
+  new Ghost('cyan', 404, 130, 3, false),
+  new Ghost('orange', 406, 130, 4, false)
 
 ]
 
@@ -108,21 +111,6 @@ for (let i = 0; i < pellets.length; i++) {
 cells[349].classList.add('invis')
 cells[350].classList.add('invis')
 
-// ! Creating a new frame each time Pac-Man moves
-function newFrame() {
-  if (direction === 'left') {
-    cells[pacMan].classList.add('pac-left')
-
-  } else if (direction === 'right') {
-    cells[pacMan].classList.add('pac-right')
-
-  } else if (direction === 'up') {
-    cells[pacMan].classList.add('pac-up')
-
-  } else if (direction === 'down') {
-    cells[pacMan].classList.add('pac-down')
-  }
-}
 
 // ! Pac-Man active direction
 let direction = 'left'
@@ -141,7 +129,10 @@ function toggleStartEvent(event) {
     scoreHtml.innerHTML = score
     welcome.style.visibility = 'hidden'
     intro.play()
+    background.classList.add('bg-play')
+
     setTimeout(() => {
+      ready.style.visibility = 'hidden'
       cells[pacMan].classList.remove('pac-full')
       cells[pacMan].classList.add('pac-left')
       startGame()
@@ -189,13 +180,13 @@ function startGame() {
       }
       cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan += 1
-      newFrame()
+      cells[pacMan].classList.add(`pac-${direction}`)
 
     } else if (direction === 'right' && pacMan === 419) {
 
       cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan = 392
-      newFrame()
+      cells[pacMan].classList.add(`pac-${direction}`)
 
     } else if (direction === 'up' && !(cells[pacMan - width].classList.contains('wall')) && !cells[pacMan - width].classList.contains('invis')) {
 
@@ -221,8 +212,8 @@ function startGame() {
       }
 
       cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
-      pacMan = pacMan - width
-      newFrame()
+      pacMan -= width
+      cells[pacMan].classList.add(`pac-${direction}`)
 
     } else if (direction === 'down' && !(cells[pacMan + width].classList.contains('wall')) && !cells[pacMan + width].classList.contains('invis')) {
 
@@ -248,8 +239,8 @@ function startGame() {
       }
 
       cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
-      pacMan = pacMan + width
-      newFrame()
+      pacMan += width
+      cells[pacMan].classList.add(`pac-${direction}`)
 
     } else if (direction === 'left' && !(cells[pacMan - 1].classList.contains('wall')) && !cells[pacMan - 1].classList.contains('invis')) {
 
@@ -277,32 +268,45 @@ function startGame() {
 
       cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan -= 1
-      newFrame()
+      cells[pacMan].classList.add(`pac-${direction}`)
 
     } else if (direction === 'left' && pacMan === 392) {
 
       cells[pacMan].classList.remove('pac-right', 'pac-left', 'pac-up', 'pac-down')
       pacMan = 419
-      newFrame()
+      cells[pacMan].classList.add(`pac-${direction}`)
+
     }
 
     if (gameEnd) {
       clearInterval(gameInterval)
     }
-    
     checkForWin()
   }, speed)
 
 }
 
+function checkIfGhostEated(ghost) {
+
+  if (pacMan === ghost.currentIndex && ghost.isScared) {
+    cells[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'ghost-scared')
+    ghost.currentIndex = ghost.startIndex
+    ghostCounter += 1
+    ghostPoints()
+    cells[ghost.currentIndex].classList.add(ghost.className, 'ghost', 'ghost-scared')
+  }
+}
+
 // ! Check for contact with the ghosts when ghost is not scared
 
 function checkForGameOver(ghost) {
+
   if (pacMan === ghost.currentIndex && !ghost.isScared) {
+    background.classList.remove('bg-play')
     powerPellet.pause()
     gameOverSound.play()
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
-    gameScore = ''
+    gameScore.innerHTML = ''
     gameStatus.innerHTML = 'Game Over!'
     gameMode = false
     gameEnd = true
@@ -313,17 +317,20 @@ function checkForGameOver(ghost) {
     }
 
     setTimeout(() => {
+
       for (let i = 0; i < cells.length; i++) {
         cells[i].classList.remove('ghost', 'pac-up', 'pac-left', 'pac-right', 'pac-down', 'ghost-scared', 'food', 'pellet', 'pink', 'red', 'cyan', 'orange')
       }
       pacMan = 657
       score = 0
       scoreToWin = 0
+      ready.style.visibility = 'visible'
+
       ghosts = [
-        new Ghost('red', 321, 130),
-        new Ghost('pink', 405, 130),
-        new Ghost('cyan', 404, 130),
-        new Ghost('orange', 406, 130)
+        new Ghost('red', 321, 130, 1, false),
+        new Ghost('pink', 405, 130, 2, false),
+        new Ghost('cyan', 404, 130, 3, false),
+        new Ghost('orange', 406, 130, 4, false)
       ]
       ghosts.forEach(ghost => {
         cells[ghost.currentIndex].classList.add(ghost.className)
@@ -331,7 +338,6 @@ function checkForGameOver(ghost) {
       })
 
       cells[pacMan].classList.add('pac-full')
-
       ghostCounter = 0
 
       for (let i = 0; i < food.length; i++) {
@@ -346,7 +352,7 @@ function checkForGameOver(ghost) {
       welcome.style.visibility = 'visible'
       window.addEventListener('keypress', toggleStartEvent)
 
-    }, 2000)
+    }, 4000)
 
   }
 
@@ -357,10 +363,11 @@ function checkForGameOver(ghost) {
 function checkForWin() {
 
   if (scoreToWin === 244) {
+    background.classList.remove('bg-play')
     powerPellet.pause()
     victory.play()
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
-    gameScore = ''
+    gameScore.innerHTML = ''
     gameStatus.innerHTML = 'Winner!'
     gameMode = false
     gameEnd = true
@@ -376,12 +383,13 @@ function checkForWin() {
       }
       pacMan = 657
       score = 0
+      ready.style.visibility = 'visible'
       scoreToWin = 0
       ghosts = [
-        new Ghost('red', 321, 130),
-        new Ghost('pink', 405, 130),
-        new Ghost('cyan', 404, 130),
-        new Ghost('orange', 406, 130)
+        new Ghost('red', 321, 130, 1, false),
+        new Ghost('pink', 405, 130, 2, false),
+        new Ghost('cyan', 404, 130, 3, false),
+        new Ghost('orange', 406, 130, 4, false)
       ]
       ghosts.forEach(ghost => {
         cells[ghost.currentIndex].classList.add(ghost.className)
@@ -415,23 +423,57 @@ function unScareGhosts() {
   ghostCounter = 0
 }
 
+// ! Variable points for ghosts
+
+function ghostPoints() {
+
+  if (ghostCounter === 1) {
+    score += 100
+    gameScore.innerHTML = '100!'
+    setTimeout(() => {
+      gameScore.innerHTML = ''
+    }, 2000)
+    scoreHtml.innerHTML = score
+  } else if (ghostCounter === 2) {
+    score += 200
+    gameScore.innerHTML = '200!'
+    setTimeout(() => {
+      gameScore.innerHTML = ''
+    }, 2000)
+    scoreHtml.innerHTML = score
+  } else if (ghostCounter === 3) {
+    score += 300
+    gameScore.innerHTML = '300!'
+    setTimeout(() => {
+      gameScore.innerHTML = ''
+    }, 2000)
+    scoreHtml.innerHTML = score
+  } else if (ghostCounter === 4) {
+    score += 400
+    gameScore.innerHTML = '400!'
+    setTimeout(() => {
+      gameScore.innerHTML = ''
+    }, 2000)
+    scoreHtml.innerHTML = score
+    ghostCounter = 0
+  }
+
+}
+
 // ! Listeners on the arrows, changes the direction of Pac-Man
 
 window.addEventListener('keydown', (event) => {
   const key = event.key
 
   if (key === 'ArrowRight' && !(cells[pacMan + 1].classList.contains('wall')) && gameMode) {
-
     direction = 'right'
 
   } else if (key === 'ArrowUp' && !(cells[pacMan - width].classList.contains('wall')) && gameMode) {
-
     direction = 'up'
   } else if (key === 'ArrowDown' && !(cells[pacMan + width].classList.contains('wall')) && gameMode) {
 
     direction = 'down'
   } else if (key === 'ArrowLeft' && !(cells[pacMan - 1].classList.contains('wall')) && gameMode) {
-
     direction = 'left'
   }
 
@@ -439,71 +481,41 @@ window.addEventListener('keydown', (event) => {
 
 
 function moveGhost(ghost) {
-
+  checkIfGhostEated(ghost)
+  checkForGameOver(ghost)
   const directions = [-1, 1, width, -width]
   let direction = directions[Math.floor(Math.random() * directions.length)]
 
   ghost.timerId = setInterval(function () {
 
     if (!cells[ghost.currentIndex + direction].classList.contains('wall') && !cells[ghost.currentIndex + direction].classList.contains('ghost')) {
+      checkIfGhostEated(ghost)
+      checkForGameOver(ghost)
       // ghost can go here
       // remove all ghost related classes
       cells[ghost.currentIndex].classList.remove(ghost.className)
       cells[ghost.currentIndex].classList.remove('ghost', 'ghost-scared')
       // change the currentIndex to the new safe square
-      ghost.currentIndex += direction
+      ghost.currentIndex = ghost.currentIndex + direction
       // place the ghost at its new location
       cells[ghost.currentIndex].classList.add(ghost.className, 'ghost')
+      checkIfGhostEated(ghost)
+      checkForGameOver(ghost)
 
       if (ghost.isScared) {
+        checkForGameOver(ghost)
         cells[ghost.currentIndex].classList.add('ghost-scared')
       }
 
     } else {
+      checkIfGhostEated(ghost)
+      checkForGameOver(ghost)
       // another direction needed
       direction = directions[Math.floor(Math.random() * directions.length)]
     }
 
-    if (pacMan === ghost.currentIndex && ghost.isScared) {
-      cells[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'ghost-scared')
-      ghost.currentIndex = ghost.startIndex
-
-      if (ghostCounter === 0) {
-        score += 100
-        gameScore.innerHTML = '100!'
-        setTimeout(() => {
-          gameScore.innerHTML = ''
-        }, 2000)
-        scoreHtml.innerHTML = score
-      } else if (ghostCounter === 1) {
-        score += 200
-        gameScore.innerHTML = '200!'
-        setTimeout(() => {
-          gameScore.innerHTML = ''
-        }, 2000)
-        scoreHtml.innerHTML = score
-      } else if (ghostCounter === 2) {
-        score += 300
-        gameScore.innerHTML = '300!'
-        setTimeout(() => {
-          gameScore.innerHTML = ''
-        }, 2000)
-        scoreHtml.innerHTML = score
-      } else if (ghostCounter === 3) {
-        score += 400
-        gameScore.innerHTML = '400!'
-        setTimeout(() => {
-          gameScore.innerHTML = ''
-        }, 2000)
-        scoreHtml.innerHTML = score
-      }
-
-      ghostCounter += 1
-      cells[ghost.currentIndex].classList.add(ghost.className, 'ghost', 'ghost-scared')
-    }
-
+    checkIfGhostEated(ghost)
     checkForGameOver(ghost)
-
   }, ghost.speed)
 
 }
